@@ -261,16 +261,25 @@ function App() {
     }
   }, []);
 
-  const handleStartLearning = () => {
-    setDynamicPassages(PASSAGES);
-    setCurrentPage('quiz');
-    setCurrentPassageIndex(0);
-    setCurrentQuestionIndex(0);
-    setSelectedOption(null);
-    setTutorMessage("Read the passage carefully!");
-    window.speechSynthesis?.cancel();
-    if(isLiveMode) {
-      try { recognitionRef.current?.start(); } catch(e){ /* ignore */ }
+  const handleStartLearning = async () => {
+    setIsGeneratingStory(true);
+    try {
+      const response = await fetch('/api/placement-test?grade=' + encodeURIComponent(studentGrade));
+      const data = await response.json();
+      setDynamicPassages([data]);
+      setCurrentPage('quiz');
+      setCurrentPassageIndex(0);
+      setCurrentQuestionIndex(0);
+      setSelectedOption(null);
+      setTutorMessage("Read the passage carefully!");
+      window.speechSynthesis?.cancel();
+      if(isLiveMode) {
+        try { recognitionRef.current?.start(); } catch(e){ /* ignore */ }
+      }
+    } catch (e) {
+      alert("Oops! Failed to load placement test.");
+    } finally {
+      setIsGeneratingStory(false);
     }
   };
 
