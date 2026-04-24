@@ -589,7 +589,7 @@ function App() {
               </div>
             </div>
             
-            <div style={{ marginTop: '20px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ marginTop: '20px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '15px', position: 'relative', zIndex: 20 }}>
               <span style={{ fontFamily: 'var(--font-en)', fontWeight: 'bold', fontSize: '20px', color: '#1E4663' }}>Select Level:</span>
               <select 
                 value={studentGrade} 
