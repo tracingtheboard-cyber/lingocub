@@ -262,8 +262,8 @@ body {
 }
 
 .center-character {
-  width: 350px;
-  height: 350px;
+  width: 450px;
+  height: 450px;
   display: flex;
   justify-content: center;
   align-items: center;

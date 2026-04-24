@@ -543,7 +543,7 @@ function App() {
                 <div className="sparkle sp-1">✨</div>
                 <div className="sparkle sp-2">⭐</div>
                 <div className="sparkle sp-3">✨</div>
-                <img src={lionImg} alt="Lele the Lion" className="lion-image" style={{ width: '300px', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 15px 20px rgba(0,0,0,0.2))' }} />
+                <img src={lionImg} alt="Lele the Lion" className="lion-image" style={{ width: '450px', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 15px 20px rgba(0,0,0,0.2))' }} />
               </div>
               <div className="text-col text-right">
                 <h1 className="main-headline"><span className="highlight">wonderful</span> learning paradise!</h1>
@@ -742,8 +742,8 @@ function App() {
                 </form>
               </div>
 
-              <div className="teacher-avatar-container">
-                <img src={lionImg} alt="Tutor Lele" className="tutor-lion-image" style={{ width: '180px', height: 'auto', objectFit: 'contain', position: 'absolute', bottom: '0', right: '-20px', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.2))', animation: 'bounce 3s infinite' }} />
+              <div className="teacher-avatar-container" style={{ width: '260px', height: '280px' }}>
+                <img src={lionImg} alt="Tutor Lele" className="tutor-lion-image" style={{ width: '260px', height: 'auto', objectFit: 'contain', position: 'absolute', bottom: '-20px', right: '-40px', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.2))', animation: 'bounce 3s infinite' }} />
               </div>
             </div>
           </div>
