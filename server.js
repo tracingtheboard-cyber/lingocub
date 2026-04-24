@@ -15,10 +15,10 @@ const openai = new OpenAI({
 
 app.post('/api/tutor', async (req, res) => {
   try {
-    const { passageText, questionText, childsAnswer } = req.body;
+    const { passageText, questionText, childsAnswer, grade = "Primary 4" } = req.body;
 
     const prompt = `
-You are a friendly, encouraging AI English tutor named Lele (a smart lion wearing glasses) for a Primary 4 student in Singapore. 
+You are a friendly, encouraging AI English tutor named Lele (a smart lion wearing glasses) for a ${grade} student in Singapore. 
 The student just answered a multiple-choice reading comprehension question INCORRECTLY.
 
 Passage they read:
@@ -53,10 +53,10 @@ Hint:`;
 
 app.post('/api/ask', async (req, res) => {
   try {
-    const { passageText, question } = req.body;
+    const { passageText, question, grade = "Primary 4" } = req.body;
 
     const prompt = `
-You are Lele, a friendly AI English tutor (a smart lion wearing glasses) for a Primary 4 student (age 10) in Singapore. 
+You are Lele, a friendly AI English tutor (a smart lion wearing glasses) for a ${grade} student in Singapore. 
 The student is reading this passage:
 "${passageText}"
 
@@ -84,10 +84,11 @@ Use primary school English vocabulary. Max 2-3 sentences.
 
 app.get('/api/daily-passage', async (req, res) => {
   try {
+    const grade = req.query.grade || "Primary 4";
     const prompt = `
-Generate a short, highly engaging reading comprehension passage for a Primary 4 student in Singapore (age 10).
-Topic: Choose randomly from everyday magic, science fiction, historical mystery, or a fun adventure in Singapore (e.g., Jewel Changi, Sentosa, or school life).
-Keep the vocabulary at the Primary 4 MOE syllabus level (use some challenging words that require context to understand). Max 3 short paragraphs.
+Generate a short, highly engaging reading comprehension passage for a ${grade} student in Singapore.
+Topic: Choose randomly from everyday magic, science fiction, historical mystery, or a fun adventure in Singapore.
+Keep the vocabulary strictly at the ${grade} MOE syllabus level (use some challenging words that require context to understand). Max 3 short paragraphs.
 Include 2 multiple-choice questions about the story. The questions should test inference or vocabulary in context, not just simple fact retrieval.
 Include 2 simple multiple-choice questions about the story.
 Return ONLY a valid JSON object matching this structure EXACTLY:
@@ -128,6 +129,26 @@ Return ONLY a valid JSON object matching this structure EXACTLY:
   } catch (error) {
     console.error('Error generating passage:', error);
     res.status(500).json({ error: 'Failed to generate passage' });
+  }
+});
+
+app.post('/api/tts', async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) return res.status(400).json({ error: 'Text is required' });
+
+    const mp3 = await openai.audio.speech.create({
+      model: "tts-1",
+      voice: "nova",
+      input: text,
+    });
+
+    const buffer = Buffer.from(await mp3.arrayBuffer());
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.send(buffer);
+  } catch (error) {
+    console.error('Error generating TTS:', error);
+    res.status(500).json({ error: 'Failed to generate TTS' });
   }
 });
 
