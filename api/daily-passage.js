@@ -21,10 +21,11 @@ export default async function handler(req, res) {
   });
 
   try {
+    const grade = req.query.grade || "Primary 4";
     const prompt = `
-Generate a short, highly engaging reading comprehension passage for a Primary 4 student in Singapore (age 10).
-Topic: Choose randomly from everyday magic, science fiction, historical mystery, or a fun adventure in Singapore (e.g., Jewel Changi, Sentosa, or school life).
-Keep the vocabulary at the Primary 4 MOE syllabus level (use some challenging words that require context to understand). Max 3 short paragraphs.
+Generate a short, highly engaging reading comprehension passage for a ${grade} student in Singapore.
+Topic: Choose randomly from everyday magic, science fiction, historical mystery, or a fun adventure in Singapore.
+Keep the vocabulary strictly at the ${grade} MOE syllabus level (use some challenging words that require context to understand). Max 3 short paragraphs.
 Include 2 multiple-choice questions about the story. The questions should test inference or vocabulary in context, not just simple fact retrieval.
 Return ONLY a valid JSON object matching this structure EXACTLY:
 {

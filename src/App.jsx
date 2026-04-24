@@ -174,6 +174,7 @@ function App() {
   
   const [dynamicPassages, setDynamicPassages] = useState(PASSAGES);
   const [isGeneratingStory, setIsGeneratingStory] = useState(false);
+  const [studentGrade, setStudentGrade] = useState('Primary 4');
   
   // Real Database State
   const [userData, setUserData] = useState({
@@ -276,7 +277,7 @@ function App() {
   const handleMagicStory = async () => {
     setIsGeneratingStory(true);
     try {
-      const response = await fetch('/api/daily-passage');
+      const response = await fetch('/api/daily-passage?grade=' + encodeURIComponent(studentGrade));
       const data = await response.json();
       setDynamicPassages([data]);
       setCurrentPage('quiz');
@@ -330,7 +331,8 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           passageText: currentPassage.content.join(" "),
-          question: questionText
+          question: questionText,
+          grade: studentGrade
         })
       });
       
@@ -440,7 +442,8 @@ function App() {
           body: JSON.stringify({
             passageText: currentPassage.content.join(" "),
             questionText: currentQuestion.text,
-            childsAnswer: currentQuestion.options[optionIndex]
+            childsAnswer: currentQuestion.options[optionIndex],
+            grade: studentGrade
           })
         });
         
@@ -537,6 +540,37 @@ function App() {
                 <div className="en-headline">START LEARNING NOW!</div>
               </div>
             </div>
+            
+            <div style={{ marginTop: '20px', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+              <span style={{ fontFamily: 'var(--font-en)', fontWeight: 'bold', fontSize: '20px', color: '#1E4663' }}>Select Level:</span>
+              <select 
+                value={studentGrade} 
+                onChange={(e) => setStudentGrade(e.target.value)}
+                style={{
+                  padding: '10px 20px',
+                  borderRadius: '20px',
+                  border: '3px solid #3B82D1',
+                  fontFamily: 'var(--font-zh)',
+                  fontSize: '20px',
+                  color: '#1E4663',
+                  backgroundColor: '#E4F7FA',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                <option value="Kindergarten 1">K1 (Age 5)</option>
+                <option value="Kindergarten 2">K2 (Age 6)</option>
+                <option value="Primary 1">Primary 1</option>
+                <option value="Primary 2">Primary 2</option>
+                <option value="Primary 3">Primary 3</option>
+                <option value="Primary 4">Primary 4</option>
+                <option value="Primary 5">Primary 5</option>
+                <option value="Primary 6">Primary 6</option>
+                <option value="Secondary 1">Secondary 1</option>
+                <option value="Secondary 2">Secondary 2</option>
+              </select>
+            </div>
+
             <div className="action-area" style={{ flexDirection: 'row', gap: '30px' }}>
               <button className="play-btn" onClick={handleStartLearning}>
                 <span className="btn-main-text" style={{ fontSize: '36px' }}>Start Placement Test</span>

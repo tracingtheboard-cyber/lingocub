@@ -21,10 +21,10 @@ export default async function handler(req, res) {
   });
 
   try {
-    const { passageText, question } = req.body;
+    const { passageText, question, grade = "Primary 4" } = req.body;
 
     const prompt = `
-You are Lele, a friendly AI English tutor (a smart lion wearing glasses) for a Primary 4 student (age 10) in Singapore. 
+You are Lele, a friendly AI English tutor (a smart lion wearing glasses) for a ${grade} student in Singapore. 
 The student is reading this passage:
 "${passageText}"
 
