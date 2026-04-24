@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from './supabase';
+import lionImg from './assets/scout-lion.png';
 
 // --- Sound Engine (Web Audio API) ---
 const playSound = (type) => {
@@ -542,7 +543,7 @@ function App() {
                 <div className="sparkle sp-1">✨</div>
                 <div className="sparkle sp-2">⭐</div>
                 <div className="sparkle sp-3">✨</div>
-                <div className="lion-placeholder">🦁</div>
+                <img src={lionImg} alt="Lele the Lion" className="lion-image" style={{ width: '300px', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 15px 20px rgba(0,0,0,0.2))' }} />
               </div>
               <div className="text-col text-right">
                 <h1 className="main-headline"><span className="highlight">wonderful</span> learning paradise!</h1>
@@ -742,9 +743,7 @@ function App() {
               </div>
 
               <div className="teacher-avatar-container">
-                <span className="owl-emoji">
-                  🦁<span style={{ position: 'absolute', top: '18px', left: '16px', fontSize: '100px' }}>👓</span>
-                </span>
+                <img src={lionImg} alt="Tutor Lele" className="tutor-lion-image" style={{ width: '180px', height: 'auto', objectFit: 'contain', position: 'absolute', bottom: '0', right: '-20px', filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.2))', animation: 'bounce 3s infinite' }} />
               </div>
             </div>
           </div>
