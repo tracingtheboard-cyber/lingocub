@@ -177,6 +177,9 @@ function App() {
   const [isGeneratingStory, setIsGeneratingStory] = useState(false);
   const [studentGrade, setStudentGrade] = useState('Primary 4');
   
+  const [homeLionState, setHomeLionState] = useState('idling');
+  const [homeBubbleText, setHomeBubbleText] = useState('');
+  
   // Real Database State
   const [userData, setUserData] = useState({
     total_days: 1,
@@ -261,6 +264,34 @@ function App() {
       recognitionRef.current = recognition;
     }
   }, []);
+
+  useEffect(() => {
+    let timer1, timer2;
+    if (currentPage === 'home') {
+      setHomeLionState('idling');
+      timer1 = setTimeout(() => {
+        setHomeLionState('running');
+        timer2 = setTimeout(() => {
+          setHomeLionState('greeting');
+          const txt = "Hello! I am Lele the lion. Welcome to LingoCub. Please select your level below and let's start an amazing reading adventure together!";
+          setHomeBubbleText(txt);
+          speakTextWithCallback(txt, () => {
+             setHomeLionState('greeting');
+             setTimeout(() => {
+               setHomeBubbleText('');
+             }, 3000);
+          });
+        }, 1000); 
+      }, 3000);
+    } else {
+      setHomeLionState('idling');
+      setHomeBubbleText('');
+    }
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [currentPage]);
 
   const handleStartLearning = async () => {
     setIsGeneratingStory(true);
@@ -539,11 +570,18 @@ function App() {
                 </h1>
                 <div className="sub-headline">Get ready to explore the wonderful world with Lele the lion</div>
               </div>
-              <div className="center-character">
+              <div className={`center-character ${homeLionState}`}>
                 <div className="sparkle sp-1">✨</div>
                 <div className="sparkle sp-2">⭐</div>
                 <div className="sparkle sp-3">✨</div>
-                <img src={lionImg} alt="Lele the Lion" className="lion-image" style={{ width: '450px', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 15px 20px rgba(0,0,0,0.2))' }} />
+                {homeBubbleText && (
+                  <div className="home-chat-bubble">{homeBubbleText}</div>
+                )}
+                <img 
+                  src={lionImg} 
+                  alt="Lele the Lion" 
+                  className={`hero-lion-img ${homeLionState}`} 
+                />
               </div>
               <div className="text-col text-right">
                 <h1 className="main-headline"><span className="highlight">wonderful</span> learning paradise!</h1>
