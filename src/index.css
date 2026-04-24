@@ -10,7 +10,7 @@
   --btn-top: #FFB535;
   --btn-bottom: #FF7700;
   
-  --font-zh: 'ZCOOL KuaiLe', cursive;
+  --font-zh: 'Fredoka', sans-serif;
   --font-en: 'Nunito', sans-serif;
 }
 
@@ -427,7 +427,7 @@ body {
   font-size: 24px;
   line-height: 2;
   color: #444;
-  font-family: 'ZCOOL KuaiLe', cursive; /* Using the same playful font for the text */
+  font-family: var(--font-en); /* Using clean sans-serif for reading */
   letter-spacing: 1px;
 }
 
