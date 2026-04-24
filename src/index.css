@@ -461,6 +461,7 @@ body {
   flex-direction: column;
   gap: 20px;
   padding: 0 20px;
+  padding-bottom: 220px; /* Prevents options from being hidden behind the AI widget */
 }
 
 /* Glossy Pill Buttons */
@@ -529,7 +530,7 @@ body {
 .ai-teacher-widget {
   position: absolute;
   bottom: -20px;
-  right: -20px;
+  right: -40px;
   display: flex;
   align-items: flex-end;
   z-index: 100;
