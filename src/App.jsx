@@ -51,33 +51,58 @@ const playSound = (type) => {
   }
 };
 
-// --- TTS Engine with Callback ---
-const speakTextWithCallback = (text, onEndCallback) => {
-  if (!window.speechSynthesis) {
-    if (onEndCallback) onEndCallback();
-    return;
-  }
-  window.speechSynthesis.cancel(); 
-  
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-US'; 
-  utterance.rate = 0.95; 
-  utterance.pitch = 1.2; 
-  
-  const voices = window.speechSynthesis.getVoices();
-  const preferredVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Female') || v.name.includes('Google UK English Female')));
-  if (preferredVoice) utterance.voice = preferredVoice;
+// --- Premium Cloud TTS Engine (with Browser Fallback) ---
+const speakTextWithCallback = async (text, onEndCallback) => {
+  try {
+    // Attempt to use Premium Cloud TTS
+    const response = await fetch('/api/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    
+    if (!response.ok) throw new Error('Cloud TTS failed');
+    
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    
+    audio.onended = () => {
+      URL.revokeObjectURL(url);
+      if (onEndCallback) onEndCallback();
+    };
+    audio.onerror = () => {
+      if (onEndCallback) onEndCallback();
+    }
+    
+    await audio.play();
+  } catch (error) {
+    console.log("Using browser fallback TTS");
+    // Fallback to robotic browser TTS if cloud fails or is too slow
+    if (!window.speechSynthesis) {
+      if (onEndCallback) onEndCallback();
+      return;
+    }
+    window.speechSynthesis.cancel(); 
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US'; 
+    utterance.rate = 0.95; 
+    utterance.pitch = 1.2; 
+    
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('Female') || v.name.includes('Google UK English Female')));
+    if (preferredVoice) utterance.voice = preferredVoice;
 
-  utterance.onend = () => {
-    if (onEndCallback) onEndCallback();
-  };
-  
-  utterance.onerror = (e) => {
-    console.error("Speech synthesis error", e);
-    if (onEndCallback) onEndCallback();
-  };
-  
-  window.speechSynthesis.speak(utterance);
+    utterance.onend = () => {
+      if (onEndCallback) onEndCallback();
+    };
+    utterance.onerror = () => {
+      if (onEndCallback) onEndCallback();
+    };
+    
+    window.speechSynthesis.speak(utterance);
+  }
 };
 
 
