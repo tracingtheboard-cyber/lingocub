@@ -172,6 +172,9 @@ function App() {
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [childQuestion, setChildQuestion] = useState("");
   
+  const [dynamicPassages, setDynamicPassages] = useState(PASSAGES);
+  const [isGeneratingStory, setIsGeneratingStory] = useState(false);
+  
   // Real Database State
   const [userData, setUserData] = useState({
     total_days: 1,
@@ -258,6 +261,7 @@ function App() {
   }, []);
 
   const handleStartLearning = () => {
+    setDynamicPassages(PASSAGES);
     setCurrentPage('quiz');
     setCurrentPassageIndex(0);
     setCurrentQuestionIndex(0);
@@ -266,6 +270,28 @@ function App() {
     window.speechSynthesis?.cancel();
     if(isLiveMode) {
       try { recognitionRef.current?.start(); } catch(e){ /* ignore */ }
+    }
+  };
+
+  const handleMagicStory = async () => {
+    setIsGeneratingStory(true);
+    try {
+      const response = await fetch('/api/daily-passage');
+      const data = await response.json();
+      setDynamicPassages([data]);
+      setCurrentPage('quiz');
+      setCurrentPassageIndex(0);
+      setCurrentQuestionIndex(0);
+      setSelectedOption(null);
+      setTutorMessage("Wow! I just wrote this story for you!");
+      window.speechSynthesis?.cancel();
+      if(isLiveModeRef.current) {
+        try { recognitionRef.current?.start(); } catch(e){ /* ignore */ }
+      }
+    } catch (e) {
+      alert("Oops! Failed to generate story.");
+    } finally {
+      setIsGeneratingStory(false);
     }
   };
 
@@ -296,7 +322,7 @@ function App() {
       try { recognitionRef.current.stop(); } catch(e){ /* ignore */ }
     }
     
-    const currentPassage = PASSAGES[currentPassageIndex];
+    const currentPassage = dynamicPassages[currentPassageIndex];
     
     try {
       const response = await fetch('/api/ask', {
@@ -360,7 +386,7 @@ function App() {
       try { recognitionRef.current.stop(); } catch(e){ /* ignore */ }
     }
     
-    const currentPassage = PASSAGES[currentPassageIndex];
+    const currentPassage = dynamicPassages[currentPassageIndex];
     const currentQuestion = currentPassage.questions[currentQuestionIndex];
     
     if (optionIndex === currentQuestion.correctIndex) {
@@ -373,7 +399,7 @@ function App() {
             setCurrentQuestionIndex(prev => prev + 1);
             setSelectedOption(null);
             setTutorMessage("You're doing great!");
-          } else if (currentPassageIndex < PASSAGES.length - 1) {
+          } else if (currentPassageIndex < dynamicPassages.length - 1) {
             setCurrentPassageIndex(prev => prev + 1);
             setCurrentQuestionIndex(0);
             setSelectedOption(null);
@@ -441,13 +467,13 @@ function App() {
     }
   };
 
-  const currentPassage = PASSAGES[currentPassageIndex];
+  const currentPassage = dynamicPassages[currentPassageIndex];
   const currentQuestion = currentPassage.questions[currentQuestionIndex];
 
-  const totalQuestions = PASSAGES.reduce((acc, p) => acc + p.questions.length, 0);
+  const totalQuestions = dynamicPassages.reduce((acc, p) => acc + p.questions.length, 0);
   let questionsCompleted = 0;
   for (let i = 0; i < currentPassageIndex; i++) {
-    questionsCompleted += PASSAGES[i].questions.length;
+    questionsCompleted += dynamicPassages[i].questions.length;
   }
   questionsCompleted += currentQuestionIndex + 1;
 
@@ -511,10 +537,27 @@ function App() {
                 <div className="en-headline">START LEARNING NOW!</div>
               </div>
             </div>
-            <div className="action-area">
+            <div className="action-area" style={{ flexDirection: 'row', gap: '30px' }}>
               <button className="play-btn" onClick={handleStartLearning}>
-                <span className="btn-main-text">Start Placement Test</span>
-                <span className="btn-sub-text">Let's Go! ➔</span>
+                <span className="btn-main-text" style={{ fontSize: '36px' }}>Start Placement Test</span>
+                <span className="btn-sub-text">Classic Mode ➔</span>
+              </button>
+              <button 
+                className="play-btn" 
+                onClick={handleMagicStory}
+                disabled={isGeneratingStory}
+                style={{ 
+                  background: 'linear-gradient(180deg, #E4F7FA 0%, #A0D8EF 100%)',
+                  boxShadow: '0 15px 25px rgba(59, 130, 209, 0.4), inset 0 -8px 20px rgba(59, 130, 209, 0.5), inset 0 8px 20px rgba(255, 255, 255, 0.7)',
+                  border: '8px solid #FFFFFF'
+                }}
+              >
+                <span className="btn-main-text" style={{ fontSize: '36px', color: '#1E4663', textShadow: '0 4px 6px rgba(255, 255, 255, 0.8)' }}>
+                  {isGeneratingStory ? "Generating..." : "✨ Daily Magic Story"}
+                </span>
+                <span className="btn-sub-text" style={{ color: '#3B82D1' }}>
+                  {isGeneratingStory ? "Writing a new adventure..." : "AI Generated for You ➔"}
+                </span>
               </button>
             </div>
           </div>
