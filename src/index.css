@@ -1064,7 +1064,7 @@ body {
   }
   
   .options-list {
-    padding-bottom: 150px; /* Space for the smaller lion */
+    padding-bottom: 20px; /* Removed large padding since widget is no longer absolute */
     padding-left: 5px;
     padding-right: 5px;
   }
@@ -1074,27 +1074,58 @@ body {
     padding: 10px 15px;
   }
   
-  .teacher-avatar-container {
-    width: 120px !important;
-    height: 120px !important;
-    margin: 0 auto;
-    margin-top: 20px;
+  .ai-teacher-widget {
     position: relative;
-    right: 0 !important;
-    bottom: 0 !important;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    justify-content: center;
+    margin-top: 20px;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  
+  .chat-bubble-container {
+    align-items: center !important;
+    margin-bottom: 20px !important;
+    margin-right: 0 !important;
+  }
+  
+  .teacher-avatar-container {
+    width: 150px !important;
+    height: 150px !important;
+    margin: 0 auto;
+    position: relative;
+    right: auto !important;
+    bottom: auto !important;
   }
   
   .tutor-lion-image {
-    width: 120px !important;
-    right: 0 !important;
-    bottom: 0 !important;
+    width: 150px !important;
+    position: static !important;
   }
   
   .chat-bubble {
-    width: 250px;
+    width: 100%;
+    max-width: 320px;
     font-size: 18px;
-    bottom: 120px;
-    right: -20px;
+    bottom: auto;
+    right: auto;
+    margin-bottom: 15px;
+  }
+  
+  /* Chat bubble tail for mobile (pointing down at lion) */
+  .chat-bubble::after {
+    bottom: -15px;
+    right: 50%;
+    transform: translateX(50%);
+    border-width: 15px 15px 0 0;
+  }
+  .chat-bubble::before {
+    bottom: -9px;
+    right: 50%;
+    transform: translateX(50%);
+    border-width: 10px 10px 0 0;
   }
   
   /* Report Page Mobile Fixes */
