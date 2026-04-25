@@ -725,18 +725,45 @@ function App() {
                   🎧 {isLiveMode ? 'Live Tutor: ON' : 'Live Tutor: OFF'}
                 </button>
 
-                <div className="chat-bubble" style={{ 
-                  opacity: isAiLoading ? 0.7 : 1, 
-                  transition: 'opacity 0.3s',
-                  whiteSpace: 'normal',
-                  maxWidth: '280px',
-                  fontSize: '18px',
-                  lineHeight: '1.4',
-                  marginBottom: '0',
-                  marginRight: '0'
-                }}>
-                  {isAiLoading ? "Hmm... 💭" : tutorMessage}
-                </div>
+                {(tutorMessage || isAiLoading) && (
+                  <div className="chat-bubble" style={{ 
+                    opacity: isAiLoading ? 0.7 : 1, 
+                    transition: 'opacity 0.3s',
+                    whiteSpace: 'normal',
+                    maxWidth: '280px',
+                    fontSize: '18px',
+                    lineHeight: '1.4',
+                    marginBottom: '0',
+                    marginRight: '0',
+                    position: 'relative'
+                  }}>
+                    <button 
+                      onClick={() => setTutorMessage("")}
+                      style={{
+                        position: 'absolute',
+                        top: '-10px',
+                        right: '-10px',
+                        background: '#FF4B4B',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '50%',
+                        width: '24px',
+                        height: '24px',
+                        cursor: 'pointer',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                      }}
+                      title="Close"
+                    >
+                      ✕
+                    </button>
+                    {isAiLoading ? "Hmm... 💭" : tutorMessage}
+                  </div>
+                )}
                 
                 <form onSubmit={handleManualAsk} style={{ marginTop: '10px', display: 'flex', gap: '5px', width: '100%', maxWidth: '320px', alignItems: 'center' }}>
                   <button 
