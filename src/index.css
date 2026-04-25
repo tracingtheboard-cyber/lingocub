@@ -955,3 +955,137 @@ body {
   from { transform: scaleY(0); }
   to { transform: scaleY(1); }
 }
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .top-nav {
+    flex-direction: column;
+    padding: 10px;
+    height: auto;
+    gap: 10px;
+  }
+  
+  .hero-main {
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
+  }
+  
+  .text-col {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .main-headline {
+    font-size: 36px;
+  }
+  
+  .sub-headline {
+    font-size: 16px;
+  }
+  
+  .center-character {
+    width: 250px;
+    height: 250px;
+    margin: 20px 0;
+  }
+  
+  .center-character.idling {
+    transform: scale(0.8) translateY(20px);
+  }
+
+  .center-character.running {
+    transform: scale(1.1) translateY(10px);
+  }
+
+  .center-character.greeting {
+    transform: scale(1.1) translateY(10px);
+  }
+  
+  .home-chat-bubble {
+    top: -100px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 280px;
+    font-size: 18px;
+    padding: 10px;
+    z-index: 20;
+  }
+  
+  @keyframes popIn {
+    from { opacity: 0; transform: translateX(-50%) scale(0.8) translateY(10px); }
+    to { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+  }
+  
+  .action-area {
+    flex-direction: column !important;
+    gap: 15px !important;
+    width: 100%;
+    padding: 0 20px;
+  }
+  
+  .play-btn {
+    width: 100%;
+    padding: 15px 10px;
+  }
+  
+  .btn-main-text {
+    font-size: 24px !important;
+  }
+  
+  .quiz-layout {
+    flex-direction: column;
+    padding: 10px;
+  }
+  
+  .article-panel, .question-panel {
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .book-title {
+    font-size: 24px !important;
+  }
+  
+  .passage-text {
+    font-size: 20px;
+  }
+  
+  .question-text {
+    font-size: 24px;
+  }
+  
+  .glossy-btn {
+    font-size: 20px;
+    padding: 10px 15px;
+  }
+  
+  .teacher-avatar-container {
+    width: 120px !important;
+    height: 120px !important;
+    margin: 0 auto;
+    margin-top: 20px;
+    position: relative;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+  
+  .tutor-lion-image {
+    width: 120px !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+  
+  .chat-bubble {
+    width: 250px;
+    font-size: 18px;
+    bottom: 120px;
+    right: -20px;
+  }
+  
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
