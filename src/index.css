@@ -1034,30 +1034,43 @@ body {
     font-size: 24px !important;
   }
   
-  .quiz-layout {
+  .quiz-container {
     flex-direction: column;
     padding: 10px;
+    height: auto;
+    margin: 10px auto;
+    gap: 20px;
   }
   
-  .article-panel, .question-panel {
+  .article-panel, .quiz-panel {
     width: 100%;
     padding: 20px;
+    height: auto;
+    max-height: 500px; /* Allow scrolling within panels on mobile */
   }
   
   .book-title {
     font-size: 24px !important;
   }
   
-  .passage-text {
-    font-size: 20px;
+  .article-content {
+    font-size: 18px;
+    line-height: 1.6;
   }
   
   .question-text {
     font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .options-list {
+    padding-bottom: 150px; /* Space for the smaller lion */
+    padding-left: 5px;
+    padding-right: 5px;
   }
   
   .glossy-btn {
-    font-size: 20px;
+    font-size: 18px;
     padding: 10px 15px;
   }
   
